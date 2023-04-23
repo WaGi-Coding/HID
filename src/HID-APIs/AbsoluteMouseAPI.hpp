@@ -73,7 +73,7 @@ void AbsoluteMouseAPI::click(uint8_t b){
 	moveTo(xAxis, yAxis, 0);
 }
 
-void AbsoluteMouseAPI::moveTo(int x, int y, signed char wheel){
+void AbsoluteMouseAPI::moveTo(int x, int y, signed char wheel, signed char hWheel){
 	xAxis = x;
 	yAxis = y;
 	HID_MouseAbsoluteReport_Data_t report;
@@ -85,18 +85,20 @@ void AbsoluteMouseAPI::moveTo(int x, int y, signed char wheel){
 	report.xAxis = ((int32_t)x + 32768) / 2;
 	report.yAxis = ((int32_t)y + 32768) / 2;
 	report.wheel = wheel;
+	report.hWheel = hWheel;
 	SendReport(&report, sizeof(report));
+}
+
+void AbsoluteMouseAPI::moveTo(int x, int y, signed char wheel){
+	moveTo(x, y, wheel, 0);
+}
+
+void AbsoluteMouseAPI::move(int x, int y, signed char wheel, signed char hWheel){
+	moveTo(qadd16(xAxis, x), qadd16(yAxis, y), wheel, hWheel);
 }
 
 void AbsoluteMouseAPI::move(int x, int y, signed char wheel){
-	moveTo(qadd16(xAxis, x), qadd16(yAxis, y), wheel);
-}
-
-void AbsoluteMouseAPI::scroll(signed char wheel, signed char hWheel){
-	HID_MouseAbsoluteReport_Data_t report;
-	report.wheel = wheel;
-	report.hWheel = hWheel;
-	SendReport(&report, sizeof(report));
+	move(x, y, wheel, 0);
 }
 
 void AbsoluteMouseAPI::press(uint8_t b){
