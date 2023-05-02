@@ -89,16 +89,8 @@ void AbsoluteMouseAPI::moveTo(int x, int y, signed char wheel, signed char hWhee
 	SendReport(&report, sizeof(report));
 }
 
-void AbsoluteMouseAPI::moveTo(int x, int y, signed char wheel){
-	moveTo(x, y, wheel, 0);
-}
-
 void AbsoluteMouseAPI::move(int x, int y, signed char wheel, signed char hWheel){
 	moveTo(qadd16(xAxis, x), qadd16(yAxis, y), wheel, hWheel);
-}
-
-void AbsoluteMouseAPI::move(int x, int y, signed char wheel){
-	move(x, y, wheel, 0);
 }
 
 void AbsoluteMouseAPI::press(uint8_t b){
